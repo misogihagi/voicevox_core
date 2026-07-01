@@ -70,7 +70,8 @@ x : UUID
 """
 
 StyleType: TypeAlias = (
-    Literal["talk", "singing_teacher", "frame_decode", "sing"] | _Reserved
+    Literal["talk", "singing_teacher", "frame_decode", "sing", "streaming_talk"]
+    | _Reserved
 )
 """
 
@@ -85,6 +86,8 @@ StyleType: TypeAlias = (
 ``"singing_teacher"`` 歌唱音声合成用のクエリの作成が可能。
 ``"frame_decode"``    歌唱音声合成が可能。
 ``"sing"``            歌唱音声合成用のクエリの作成と歌唱音声合成が可能。
+``"streaming_talk"``  音声合成クエリの作成と通常ないしストリーミングでの音声合成が可能。
+                      ``"talk"`` スタイルの機能を包含する。
 ``_Reserved``         将来のために予約されている値。この値が存在することは決してない。
                       ``str`` のサブタイプであるため、 ``StyleType`` を ``str`` として
                       扱うことは可能。
@@ -104,6 +107,8 @@ StyleType: TypeAlias = (
                 return 2
             case "sing":
                 return 3
+            case "streaming_talk":
+                return 4
 
 .. code-block:: text
 
@@ -256,6 +261,27 @@ AccelerationMode: TypeAlias = Literal["AUTO", "CPU", "GPU"] | _Reserved
 
 def _(mode: AccelerationMode):
     _: str = mode
+
+
+OnExistingVoiceModelId: TypeAlias = Literal["ERROR", "RELOAD", "SKIP"] | _Reserved
+"""
+``Synthesizer::load_voice_model`` の実行時に、同じ ``id`` の ``VoiceModelFile`` が既に読み込まれていたときのふるまい。
+
+============= =============================================
+値            説明
+``"ERROR"``   エラー。デフォルトのふるまい。
+``"RELOAD"``  再読み込みする。VOICEVOX
+              COREでは、長文のテキストを一度に音声合成するとCPU/GPUメモリが大量に占有されたままになる。再読み込みを行うとメモリの使用量が元に戻る。
+``"SKIP"``    スキップする。
+``_Reserved`` 将来のために予約されている値。この値が存在することは決してない。
+              ``str`` のサブタイプであるため、 ``OnExistingVoiceModelId`` を ``str`` として
+              扱うことは可能。
+============= =============================================
+"""
+
+
+def _(on_existing: OnExistingVoiceModelId):
+    _: str = on_existing
 
 
 @dataclasses.dataclass

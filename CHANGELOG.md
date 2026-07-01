@@ -5,26 +5,6 @@
 ## [Unreleased]
 
 <!--
-### macOSのXCFramework追加
-
-- \[C\] \[macOS\] :tada: GitHub ReleasesのXCFrameworkが、macOS向けのライブラリも同梱するようになります ([#1056] helped by [@nekomimimi])。
-
-    ```diff
-    -voicevox_core-ios-xcframework-cpu-{バージョン}.zip
-    +voicevox_core-xcframework-cpu-{バージョン}.zip
-     └── voicevox_core.xcframework
-         ├── Info.plist
-    +    ├── macos-arm64_x86_64/
-         ├── ios-arm64/
-         └── ios-arm64_x86_64-simulator/
-    ```
-
-    Changedの章で後述する通り、リリースの名前は変わります。
-
-- \[C\] \[macOS\] GitHub Releasesにおいてvoicevox\_core-**ios**-xcframework-cpu-{バージョン}.zipは、macOS版XCFrameworkの提供に伴ってvoicevox\_core-xcframework-cpu-{バージョン}.zipに改名されます ([#1056] helped by [@nekomimimi])。
-
-[#1056]: https://github.com/VOICEVOX/voicevox_core/pull/1056
-
 ### ストリーミングAPI
 
 - split decoder into spectrogram and vocoder without changing API ([#851])
@@ -34,12 +14,18 @@
 - feat!: `render`の引数の範囲指定部分を各言語の慣習に合わせる ([#879])
 - feat!: decode.onnxを復活させる ([#918])
 - [#1319]
+- [#1363]
+- [#1364]
+- [#1376]
 
 [#854]: https://github.com/VOICEVOX/voicevox_core/pull/854
 [#864]: https://github.com/VOICEVOX/voicevox_core/pull/864
 [#867]: https://github.com/VOICEVOX/voicevox_core/pull/867
 [#879]: https://github.com/VOICEVOX/voicevox_core/pull/879
 [#1319]: https://github.com/VOICEVOX/voicevox_core/pull/1319
+[#1363]: https://github.com/VOICEVOX/voicevox_core/pull/1363
+[#1364]: https://github.com/VOICEVOX/voicevox_core/pull/1364
+[#1376]: https://github.com/VOICEVOX/voicevox_core/pull/1376
 
 ### もし`TextAnalyzer`機能を充実させた場合
 
@@ -55,7 +41,12 @@
 
 ### Added
 
-- \[Rust\] `Synthesizer::load_voice_model`にオプション`on_existing`が追加されます ([#1331])。
+- `Synthesizer::load_voice_model`にオプション`on_existing`が追加されます ([#1331], [#1337])。
+- \[Rust\] APIドキュメントが改善されます ([#1343], [#1381])。
+    - トップページのコード例で`tracing_subscriber::fmt().init();`が行われるようになります。
+    - \[Linux\] muslターゲットでは`load-onnxruntime`が事実上利用不可であることが明記されます。
+- \[C\] \[macOS\] :tada: macOS向けのXCFrameworkがvoicevox\_core-xcframework-cpu-{バージョン}.zipという名前でリリースされるようになります ([#1056] helped by [@nekomimimi], [#1114], [#1362])。
+- \[C,ダウンローダー\] \[macOS\] リリースがコード署名されるようになります ([#1326])。
 - \[ダウンローダー\] `--os`オプションで`android`と`ios`を指定できるようになります。ただしiOSの`c-api`をダウンロードすることはできません ([#1313])。
 - \[ダウンローダー\] 環境変数`VV_DOWNLOADER_C_API_ALLOW_DRAFT`を設定することで、`c-api`のdraft releaseを`--c-api-version`で指定できるようになります。主な用途はこのvoicevox\_coreリポジトリでの内部利用です ([#1315])。
 
@@ -79,6 +70,12 @@
     - \[追加\]: `ndarray@0.17`
     - \[追加\]: `git+https://github.com/pykeio/ort.git?rev=94417081c47f47f5a7d6a92ce94bb38fda10019f#ort@2.0.0-rc.12`
     - \[変更\]: `indexmap@2`: `^2.6.0` → `^2.13.0`
+- \[C\] \[BREAKING\] `voicevox_synthesizer_load_voice_model`に引数`VoicevoxLoadVoiceModelOptions options`が追加されます ([#1337])。
+- \[Java\] \[BREAKING\] `Synthesizer#load_voice_model`がビルダースタイルになります ([#1337])。
+
+### Fixed
+
+- \[Python\] `Synthesizer.load_voice_model`のdocstringにおける"Parameters"の説明が誤っていたのが修正されます ([#1359])。
 
 ### Security
 
@@ -1420,6 +1417,7 @@ Windows版ダウンローダーのビルドに失敗しています。
 [#1048]: https://github.com/VOICEVOX/voicevox_core/pull/1048
 [#1049]: https://github.com/VOICEVOX/voicevox_core/pull/1049
 [#1055]: https://github.com/VOICEVOX/voicevox_core/pull/1055
+[#1056]: https://github.com/VOICEVOX/voicevox_core/pull/1056
 [#1057]: https://github.com/VOICEVOX/voicevox_core/pull/1057
 [#1058]: https://github.com/VOICEVOX/voicevox_core/pull/1058
 [#1060]: https://github.com/VOICEVOX/voicevox_core/pull/1060
@@ -1440,6 +1438,7 @@ Windows版ダウンローダーのビルドに失敗しています。
 [#1108]: https://github.com/VOICEVOX/voicevox_core/pull/1108
 [#1109]: https://github.com/VOICEVOX/voicevox_core/pull/1109
 [#1111]: https://github.com/VOICEVOX/voicevox_core/pull/1111
+[#1114]: https://github.com/VOICEVOX/voicevox_core/pull/1114
 [#1116]: https://github.com/VOICEVOX/voicevox_core/pull/1116
 [#1117]: https://github.com/VOICEVOX/voicevox_core/pull/1117
 [#1118]: https://github.com/VOICEVOX/voicevox_core/pull/1118
@@ -1510,9 +1509,15 @@ Windows版ダウンローダーのビルドに失敗しています。
 [#1313]: https://github.com/VOICEVOX/voicevox_core/pull/1313
 [#1315]: https://github.com/VOICEVOX/voicevox_core/pull/1315
 [#1323]: https://github.com/VOICEVOX/voicevox_core/pull/1323
+[#1326]: https://github.com/VOICEVOX/voicevox_core/pull/1326
 [#1331]: https://github.com/VOICEVOX/voicevox_core/pull/1331
+[#1337]: https://github.com/VOICEVOX/voicevox_core/pull/1337
+[#1343]: https://github.com/VOICEVOX/voicevox_core/pull/1343
 [#1349]: https://github.com/VOICEVOX/voicevox_core/pull/1349
 [#1350]: https://github.com/VOICEVOX/voicevox_core/pull/1350
+[#1359]: https://github.com/VOICEVOX/voicevox_core/pull/1359
+[#1362]: https://github.com/VOICEVOX/voicevox_core/pull/1362
+[#1381]: https://github.com/VOICEVOX/voicevox_core/pull/1381
 
 [VOICEVOX/onnxruntime-builder#25]: https://github.com/VOICEVOX/onnxruntime-builder/pull/25
 
