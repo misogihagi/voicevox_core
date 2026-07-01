@@ -1,0 +1,27 @@
+[package]
+name = "voicevox_cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "voicevox"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+camino.workspace = true
+clap = { workspace = true, features = ["derive"] }
+voicevox_core = { workspace = true, features = ["load-onnxruntime"] }
+flate2.workspace = true
+fs-err.workspace = true
+futures-util.workspace = true
+indicatif.workspace = true
+minus = { workspace = true, features = ["static_output"] }
+octocrab = { workspace = true, features = ["stream"] }
+rprompt.workspace = true
+scraper.workspace = true
+tar.workspace = true
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread"] }
+unicode-width.workspace = true
